@@ -78,6 +78,7 @@ hammer = Hammer(canvas).on "drag touch", (event) ->
 # Main
 demoSample = new Sample "samples/demo.wav", () ->
   @drawOn(canvas)
+  @play()
   return
 
 # Animation loop

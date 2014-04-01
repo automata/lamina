@@ -102,6 +102,7 @@
 
   demoSample = new Sample("samples/demo.wav", function() {
     this.drawOn(canvas);
+    this.play();
   });
 
   onFrame = function(timestamp) {
