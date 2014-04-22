@@ -56,6 +56,11 @@ window.requestAnimationFrame =
   window.webkitRequestAnimationFrame or
   window.msRequestAnimationFrame
 
+# Multi-browser AudioContext
+window.AudioContext =
+  window.AudioContext or
+  window.webkitAudioContext
+
 # Waveform canvas setup
 canvas = document.getElementById "c"
 canvas.width = window.innerWidth

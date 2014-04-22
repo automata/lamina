@@ -80,6 +80,8 @@
 
   window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
   canvas = document.getElementById("c");
 
   canvas.width = window.innerWidth;
