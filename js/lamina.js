@@ -37,7 +37,7 @@
       this.source = audioContext.createBufferSource();
       this.source.buffer = this.data;
       this.source.connect(audioContext.destination);
-      return this.source.start(time, offset, duration);
+      return this.source.start(audioContext.currentTime, offset, duration);
     };
 
     Sample.prototype.stop = function(time) {

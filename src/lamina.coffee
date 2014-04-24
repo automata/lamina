@@ -1,3 +1,4 @@
+
 # Abstracting how to load, play and draw sample files
 class Sample
   constructor: (url, onReady) ->
@@ -20,7 +21,7 @@ class Sample
     @source = audioContext.createBufferSource()
     @source.buffer = @data
     @source.connect(audioContext.destination)
-    @source.start(time, offset, duration)
+    @source.start(audioContext.currentTime, offset, duration)
 
   stop: (time=0) ->
     @source.stop(time)
