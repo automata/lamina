@@ -1,4 +1,36 @@
 
+# Abstracting a Novation Launchpad MIDI controller
+class Launchpad
+  constructor: (init) ->
+    window.navigator.requestMIDIAccess().then(@onMIDISuccess, @onMIDIFailure)
+    @init = init
+
+  onMIDISuccess: (access) =>
+    midiAccess = access
+    @midiInput = midiAccess.inputs()[0]
+
+    
+    @midiInput.onmidimessage = @onMIDIMessage
+    @midiOutput = midiAccess.outputs()[0]
+    console.log("MIDI connected!!")
+    @init()
+    
+  onMIDIFailure: (err) ->
+    console.log("MIDI Error: ", err.code)
+
+  onMIDIMessage: (event) =>
+    command = event.data[0]
+    note = event.data[1]
+    velocity = event.data[2]
+    console.log command, note, velocity
+
+    x = note & 0x0f
+    y = (note & 0xf0) >> 4
+
+  updateCell: (row, column, red, green) =>
+    @midiOutput.send([0x90, (row << 4) | column, red | (green << 4)])
+  
+
 # Abstracting how to load, play and draw sample files
 class Sample
   constructor: (url, onReady) ->
@@ -81,15 +113,22 @@ hammer = Hammer(canvas).on "drag touch", (event) ->
   demoSample.drawOn(canvas, x)
   return
 
-# Main
-demoSample = new Sample "samples/demo.wav", () ->
-  @drawOn(canvas)
-  @play()
-  return
-
-# Animation loop
-onFrame = (timestamp) ->
-  requestAnimationFrame(onFrame)
-  return
-
-#requestAnimationFrame(onFrame)
+window.addEventListener 'load', () ->
+  # Main
+  demoSample = new Sample "samples/demo.wav", () ->
+    @drawOn(canvas)
+    @play()
+    return
+  
+  # Animation loop
+  onFrame = (timestamp) ->
+    requestAnimationFrame(onFrame)
+    return
+  
+  #requestAnimationFrame(onFrame)
+  
+  # MIDI controller
+  launchpad = new Launchpad () ->
+    for i in [0...8]
+      for j in [0...8]
+        launchpad.updateCell(i, j, 0, 3)
