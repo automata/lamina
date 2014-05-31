@@ -1,4 +1,6 @@
 
+demoSample = null
+
 # Abstracting a Novation Launchpad MIDI controller
 class Launchpad
   constructor: (init) ->
@@ -109,6 +111,7 @@ hammer = Hammer(canvas).on "drag touch", (event) ->
   x = event.gesture.center.clientX
   offsetSeconds = x*step / audioContext.sampleRate
   demoSample.stop()
+  console.log offsetSeconds
   demoSample.play(0, offsetSeconds)
   demoSample.drawOn(canvas, x)
   return
@@ -125,7 +128,7 @@ window.addEventListener 'load', () ->
     requestAnimationFrame(onFrame)
     return
   
-  #requestAnimationFrame(onFrame)
+  requestAnimationFrame(onFrame)
   
   # MIDI controller
   launchpad = new Launchpad () ->
